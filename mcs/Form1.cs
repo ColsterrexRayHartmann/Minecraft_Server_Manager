@@ -495,6 +495,8 @@ namespace mcs
             string[,] pro = new string[mc.GetConf().Length, 2];
             pro = mc.GetConf();
             pro[find2("allow-nether", pro),1]= putout(skinComboBox1);
+            pro[find2("difficulty", pro), 1] = skinComboBox7.SelectedIndex.ToString();
+
             /*
             string value = Properties.Resources.servercon;
             value = value.Replace("地狱", putout(skinComboBox1));
@@ -511,7 +513,7 @@ namespace mcs
             value = value.Replace("简介", unicode_0(skinTextBox7.Text));
             value = value.Replace("难度", skinComboBox7.SelectedIndex.ToString());
             */
-           
+
         }
     }
 }
