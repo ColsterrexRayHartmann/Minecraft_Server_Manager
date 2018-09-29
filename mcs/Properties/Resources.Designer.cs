@@ -208,40 +208,5 @@ namespace mcs.Properties {
                 return ((byte[])(obj));
             }
         }
-        
-        /// <summary>
-        ///   查找类似 max-tick-time=60000
-        ///generator-settings=
-        ///allow-nether=地狱
-        ///force-gamemode=false
-        ///enforce-whitelist=false
-        ///gamemode=0
-        ///enable-query=false
-        ///player-idle-timeout=0
-        ///difficulty=难度
-        ///spawn-monsters=怪物
-        ///op-permission-level=4
-        ///pvp=互殴
-        ///snooper-enabled=true
-        ///level-type=DEFAULT
-        ///hardcore=false
-        ///enable-command-block=命令方块
-        ///max-players=最大玩家数
-        ///network-compression-threshold=256
-        ///resource-pack-sha1=
-        ///max-world-size=29999984
-        ///server-port=端口
-        ///server-ip=
-        ///spawn-npcs=true
-        ///allow-flight=false
-        ///level-name=world
-        ///view-distance=10
-        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        public static string servercon {
-            get {
-                return ResourceManager.GetString("servercon", resourceCulture);
-            }
-        }
     }
 }

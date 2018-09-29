@@ -411,7 +411,7 @@ namespace mcs
             }
             
         }
-        public string find(string target, string[,] arry)
+        private string find(string target, string[,] arry)
         {
             int row = arry.GetLength(0);
             for (int i = 0; i <= row-1; i++)
@@ -421,7 +421,7 @@ namespace mcs
             }
             return "";
         }//搜索二维数组1
-        public int find1(string target, string[,] arry)
+        private int find1(string target, string[,] arry)
         {
             int row = arry.GetLength(0);
             for (int i = 0; i <= row - 1; i++)
@@ -440,7 +440,7 @@ namespace mcs
             }
             return 1;
         }//搜索二维数组2
-        public string putout(CCWin.SkinControl.SkinComboBox cb)
+        private string putout(CCWin.SkinControl.SkinComboBox cb)
         {
             switch (cb.SelectedIndex)
             {
@@ -451,7 +451,7 @@ namespace mcs
             }
             return "";
         }
-        public int find2(string target, string[,] arry)
+        private int find2(string target, string[,] arry)
         {
             int row = arry.GetLength(0);
             for (int i = 0; i <= row - 1; i++)
@@ -461,7 +461,7 @@ namespace mcs
             }
             return -1;
         }
-        public string unicode_0(string str)
+        private string unicode_0(string str)
         {
             string outStr = "";
             if (!string.IsNullOrEmpty(str))
@@ -481,39 +481,43 @@ namespace mcs
             }
             return outStr;
         }// 中英文转unicode
-        public string unicode_js_1(string str)
+        private string unicode_js_1(string str)
         {
             string outStr = "";
             Regex reg = new Regex(@"(?i)\\u([0-9a-f]{4})");
             outStr = reg.Replace(str, delegate (Match m1) {return ((char)Convert.ToInt32(m1.Groups[1].Value, 16)).ToString();});
             return outStr;
         }// unicode转中文
-        private void skinButton1_Click(object sender, EventArgs e)
+        private void skinButton1_Click(object sender, EventArgs e)//保存配置
         {
-            //TODO:保存配置
-
             string[,] pro = new string[mc.GetConf().Length, 2];
             pro = mc.GetConf();
             pro[find2("allow-nether", pro),1]= putout(skinComboBox1);
             pro[find2("difficulty", pro), 1] = skinComboBox7.SelectedIndex.ToString();
-
-            /*
-            string value = Properties.Resources.servercon;
-            value = value.Replace("地狱", putout(skinComboBox1));
-            value = value.Replace("正版", putout(skinComboBox2));
-            value = value.Replace("怪物", putout(skinComboBox3));
-            value = value.Replace("动物", putout(skinComboBox5));
-            value = value.Replace("白名单", putout(skinComboBox6));
-            value = value.Replace("互殴", putout(skinComboBox8));
-            value = value.Replace("命令方块", putout(skinComboBox9));
-            value = value.Replace("端口", skinTextBox8.Text);
-            value = value.Replace("种子", skinTextBox9.Text);
-            value = value.Replace("最大玩家数", skinTextBox10.Text);
-            value = value.Replace("最大玩家数", skinTextBox10.Text);
-            value = value.Replace("简介", unicode_0(skinTextBox7.Text));
-            value = value.Replace("难度", skinComboBox7.SelectedIndex.ToString());
-            */
-
+            pro[find2("spawn-monsters", pro), 1] = putout(skinComboBox3);
+            pro[find2("pvp", pro), 1] = putout(skinComboBox8);
+            pro[find2("enable-command-block", pro), 1] = putout(skinComboBox9);
+            pro[find2("max-players", pro), 1] = skinTextBox10.Text;
+            pro[find2("server-port", pro), 1] = skinTextBox8.Text;
+            pro[find2("spawn-animals", pro), 1] = putout(skinComboBox5);
+            pro[find2("white-list", pro), 1] = putout(skinComboBox6);
+            pro[find2("online-mode", pro), 1] = putout(skinComboBox2);
+            pro[find2("level-seed", pro), 1] = skinTextBox9.Text;
+            pro[find2("motd", pro), 1] = unicode_0(skinTextBox7.Text);
+            string value = "";
+            int x = 0;
+            foreach (string i in pro)
+            {
+                if (x % 2 == 0)
+                    value += i + "=";
+                else
+                    value += i + "\r\n";
+                x++;
+            }
+            if (MCS.WriteText(Rundir + "\\server.properties", value))
+                SkinMessageBox("提示 :", "保存完成", 1);
+            else
+                SkinMessageBox("提示 :", "保存失败", 1);
         }
     }
 }

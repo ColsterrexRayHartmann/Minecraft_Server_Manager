@@ -108,7 +108,7 @@ namespace mcs
                 conftt[x, 0] = s[0];
                 conftt[x, 1] = s[1];
             }
-
+            sr.Close();
             return conftt;
         }//读取server.properties 返回二维数组
         public bool addPlus(string Path)
