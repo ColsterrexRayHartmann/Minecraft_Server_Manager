@@ -114,13 +114,13 @@
             this.skinButton11 = new CCWin.SkinControl.SkinButton();
             this.skinButton10 = new CCWin.SkinControl.SkinButton();
             this.skinButton9 = new CCWin.SkinControl.SkinButton();
-            this.skinListBox2 = new CCWin.SkinControl.SkinListBox();
+            this.ModsList = new CCWin.SkinControl.SkinListBox();
             this.skinTabPage6 = new CCWin.SkinControl.SkinTabPage();
             this.skinButton13 = new CCWin.SkinControl.SkinButton();
             this.skinButton14 = new CCWin.SkinControl.SkinButton();
             this.skinButton15 = new CCWin.SkinControl.SkinButton();
             this.skinButton16 = new CCWin.SkinControl.SkinButton();
-            this.skinListBox3 = new CCWin.SkinControl.SkinListBox();
+            this.PluginsList = new CCWin.SkinControl.SkinListBox();
             this.skinTabPage7 = new CCWin.SkinControl.SkinTabPage();
             this.skinGroupBox7 = new CCWin.SkinControl.SkinGroupBox();
             this.skinLabel33 = new CCWin.SkinControl.SkinLabel();
@@ -607,7 +607,7 @@
             this.skinTabControl2.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl2.PageHover")));
             this.skinTabControl2.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl2.PageNorml = null;
-            this.skinTabControl2.SelectedIndex = 1;
+            this.skinTabControl2.SelectedIndex = 3;
             this.skinTabControl2.Size = new System.Drawing.Size(448, 309);
             this.skinTabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl2.TabIndex = 0;
@@ -878,6 +878,7 @@
             this.skinListBox1.HorizontalScrollbar = true;
             this.skinListBox1.ImagePoint = false;
             this.skinListBox1.ImageVisble = false;
+            this.skinListBox1.ItemBorderVisble = false;
             this.skinListBox1.ItemGlassVisble = false;
             this.skinListBox1.ItemHeight = 18;
             this.skinListBox1.Location = new System.Drawing.Point(13, 26);
@@ -1799,7 +1800,7 @@
             this.skinTabPage5.Controls.Add(this.skinButton11);
             this.skinTabPage5.Controls.Add(this.skinButton10);
             this.skinTabPage5.Controls.Add(this.skinButton9);
-            this.skinTabPage5.Controls.Add(this.skinListBox2);
+            this.skinTabPage5.Controls.Add(this.ModsList);
             this.skinTabPage5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage5.Location = new System.Drawing.Point(0, 10);
             this.skinTabPage5.Name = "skinTabPage5";
@@ -1826,6 +1827,7 @@
             this.skinButton12.TabIndex = 53;
             this.skinButton12.Text = "本地文件夹";
             this.skinButton12.UseVisualStyleBackColor = false;
+            this.skinButton12.Click += new System.EventHandler(this.skinButton12_Click);
             // 
             // skinButton11
             // 
@@ -1845,6 +1847,7 @@
             this.skinButton11.TabIndex = 52;
             this.skinButton11.Text = "刷新";
             this.skinButton11.UseVisualStyleBackColor = false;
+            this.skinButton11.Click += new System.EventHandler(this.skinButton11_Click);
             // 
             // skinButton10
             // 
@@ -1864,6 +1867,7 @@
             this.skinButton10.TabIndex = 51;
             this.skinButton10.Text = "删除";
             this.skinButton10.UseVisualStyleBackColor = false;
+            this.skinButton10.Click += new System.EventHandler(this.skinButton10_Click);
             // 
             // skinButton9
             // 
@@ -1883,25 +1887,27 @@
             this.skinButton9.TabIndex = 50;
             this.skinButton9.Text = "添加";
             this.skinButton9.UseVisualStyleBackColor = false;
+            this.skinButton9.Click += new System.EventHandler(this.skinButton9_Click);
             // 
-            // skinListBox2
+            // ModsList
             // 
-            this.skinListBox2.Back = null;
-            this.skinListBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.skinListBox2.FormattingEnabled = true;
-            this.skinListBox2.HorizontalScrollbar = true;
-            this.skinListBox2.ImagePoint = false;
-            this.skinListBox2.ImageVisble = false;
-            this.skinListBox2.ItemGlassVisble = false;
-            this.skinListBox2.ItemHeight = 18;
-            this.skinListBox2.Location = new System.Drawing.Point(4, 10);
-            this.skinListBox2.MouseColor = System.Drawing.Color.Gainsboro;
-            this.skinListBox2.Name = "skinListBox2";
-            this.skinListBox2.RightSelect = false;
-            this.skinListBox2.RowBackColor2 = System.Drawing.Color.White;
-            this.skinListBox2.Size = new System.Drawing.Size(348, 274);
-            this.skinListBox2.Sorted = true;
-            this.skinListBox2.TabIndex = 37;
+            this.ModsList.Back = null;
+            this.ModsList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.ModsList.FormattingEnabled = true;
+            this.ModsList.HorizontalScrollbar = true;
+            this.ModsList.ImagePoint = false;
+            this.ModsList.ImageVisble = false;
+            this.ModsList.ItemBorderVisble = false;
+            this.ModsList.ItemGlassVisble = false;
+            this.ModsList.ItemHeight = 18;
+            this.ModsList.Location = new System.Drawing.Point(4, 10);
+            this.ModsList.MouseColor = System.Drawing.Color.Gainsboro;
+            this.ModsList.Name = "ModsList";
+            this.ModsList.RightSelect = false;
+            this.ModsList.RowBackColor2 = System.Drawing.Color.White;
+            this.ModsList.Size = new System.Drawing.Size(348, 274);
+            this.ModsList.Sorted = true;
+            this.ModsList.TabIndex = 37;
             // 
             // skinTabPage6
             // 
@@ -1910,7 +1916,7 @@
             this.skinTabPage6.Controls.Add(this.skinButton14);
             this.skinTabPage6.Controls.Add(this.skinButton15);
             this.skinTabPage6.Controls.Add(this.skinButton16);
-            this.skinTabPage6.Controls.Add(this.skinListBox3);
+            this.skinTabPage6.Controls.Add(this.PluginsList);
             this.skinTabPage6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage6.Location = new System.Drawing.Point(0, 10);
             this.skinTabPage6.Name = "skinTabPage6";
@@ -1937,6 +1943,7 @@
             this.skinButton13.TabIndex = 58;
             this.skinButton13.Text = "本地文件夹";
             this.skinButton13.UseVisualStyleBackColor = false;
+            this.skinButton13.Click += new System.EventHandler(this.skinButton13_Click);
             // 
             // skinButton14
             // 
@@ -1956,6 +1963,7 @@
             this.skinButton14.TabIndex = 57;
             this.skinButton14.Text = "刷新";
             this.skinButton14.UseVisualStyleBackColor = false;
+            this.skinButton14.Click += new System.EventHandler(this.skinButton14_Click);
             // 
             // skinButton15
             // 
@@ -1975,6 +1983,7 @@
             this.skinButton15.TabIndex = 56;
             this.skinButton15.Text = "删除";
             this.skinButton15.UseVisualStyleBackColor = false;
+            this.skinButton15.Click += new System.EventHandler(this.skinButton15_Click);
             // 
             // skinButton16
             // 
@@ -1994,25 +2003,27 @@
             this.skinButton16.TabIndex = 55;
             this.skinButton16.Text = "添加";
             this.skinButton16.UseVisualStyleBackColor = false;
+            this.skinButton16.Click += new System.EventHandler(this.skinButton16_Click);
             // 
-            // skinListBox3
+            // PluginsList
             // 
-            this.skinListBox3.Back = null;
-            this.skinListBox3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.skinListBox3.FormattingEnabled = true;
-            this.skinListBox3.HorizontalScrollbar = true;
-            this.skinListBox3.ImagePoint = false;
-            this.skinListBox3.ImageVisble = false;
-            this.skinListBox3.ItemGlassVisble = false;
-            this.skinListBox3.ItemHeight = 18;
-            this.skinListBox3.Location = new System.Drawing.Point(4, 10);
-            this.skinListBox3.MouseColor = System.Drawing.Color.Gainsboro;
-            this.skinListBox3.Name = "skinListBox3";
-            this.skinListBox3.RightSelect = false;
-            this.skinListBox3.RowBackColor2 = System.Drawing.Color.White;
-            this.skinListBox3.Size = new System.Drawing.Size(348, 274);
-            this.skinListBox3.Sorted = true;
-            this.skinListBox3.TabIndex = 54;
+            this.PluginsList.Back = null;
+            this.PluginsList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.PluginsList.FormattingEnabled = true;
+            this.PluginsList.HorizontalScrollbar = true;
+            this.PluginsList.ImagePoint = false;
+            this.PluginsList.ImageVisble = false;
+            this.PluginsList.ItemBorderVisble = false;
+            this.PluginsList.ItemGlassVisble = false;
+            this.PluginsList.ItemHeight = 18;
+            this.PluginsList.Location = new System.Drawing.Point(4, 10);
+            this.PluginsList.MouseColor = System.Drawing.Color.Gainsboro;
+            this.PluginsList.Name = "PluginsList";
+            this.PluginsList.RightSelect = false;
+            this.PluginsList.RowBackColor2 = System.Drawing.Color.White;
+            this.PluginsList.Size = new System.Drawing.Size(348, 274);
+            this.PluginsList.Sorted = true;
+            this.PluginsList.TabIndex = 54;
             // 
             // skinTabPage7
             // 
@@ -2527,12 +2538,12 @@
         private CCWin.SkinControl.SkinButton skinButton11;
         private CCWin.SkinControl.SkinButton skinButton10;
         private CCWin.SkinControl.SkinButton skinButton9;
-        private CCWin.SkinControl.SkinListBox skinListBox2;
+        private CCWin.SkinControl.SkinListBox ModsList;
         private CCWin.SkinControl.SkinButton skinButton13;
         private CCWin.SkinControl.SkinButton skinButton14;
         private CCWin.SkinControl.SkinButton skinButton15;
         private CCWin.SkinControl.SkinButton skinButton16;
-        private CCWin.SkinControl.SkinListBox skinListBox3;
+        private CCWin.SkinControl.SkinListBox PluginsList;
         private CCWin.SkinControl.SkinGroupBox skinGroupBox6;
         private CCWin.SkinControl.SkinGroupBox skinGroupBox5;
         private CCWin.SkinControl.SkinGroupBox skinGroupBox4;

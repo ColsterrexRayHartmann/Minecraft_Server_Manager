@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace mcs
 {
@@ -59,7 +60,6 @@ namespace mcs
             Thread load = new Thread(Loadwin);
             jardirectorytextbox.Text = Environment.CurrentDirectory + "\\Server";
             load.Start();//开始 启动线程
-            //TODO:首次启动参数设置
         }
         private void Loadwin()
         {
@@ -194,6 +194,18 @@ namespace mcs
             skinLabel12.ForeColor = Color.Black;
             skinLabel14.ForeColor = Color.Black;
             skinLabel15.ForeColor = Color.Black;
+
+            if (Directory.Exists(Rundir + "\\mods"))
+            {
+                string[] files = Enumeratefiles(Rundir + "\\mods");
+                foreach (string v in files)
+                {
+                    if (v.Substring(v.Length - 3, 3) == "jar")
+                    {
+                        ModsList.Items.Add(new CCWin.SkinControl.SkinListBoxItem(v));
+                    }
+                }
+            }
         }
         private void skinLabel14_Click(object sender, EventArgs e)
         {
@@ -204,6 +216,18 @@ namespace mcs
             skinLabel12.ForeColor = Color.Black;
             skinLabel13.ForeColor = Color.Black;
             skinLabel15.ForeColor = Color.Black;
+
+            if (Directory.Exists(Rundir + "\\plugins"))
+            {
+                string[] files = Enumeratefiles(Rundir + "\\plugins");
+                foreach (string v in files)
+                {
+                    if (v.Substring(v.Length - 3, 3) == "jar")
+                    {
+                        PluginsList.Items.Add(new CCWin.SkinControl.SkinListBoxItem(v));
+                    }
+                }
+            }
         }
         private void skinLabel15_Click(object sender, EventArgs e)
         {
@@ -411,24 +435,24 @@ namespace mcs
             }
             
         }
-        private string find(string target, string[,] arry)
+        private string find(string target, string[,] array)
         {
-            int row = arry.GetLength(0);
+            int row = array.GetLength(0);
             for (int i = 0; i <= row-1; i++)
             {
-                if (target == arry[i, 0])
-                    return arry[i, 1];
+                if (target == array[i, 0])
+                    return array[i, 1];
             }
             return "";
         }//搜索二维数组1
-        private int find1(string target, string[,] arry)
+        private int find1(string target, string[,] array)
         {
-            int row = arry.GetLength(0);
+            int row = array.GetLength(0);
             for (int i = 0; i <= row - 1; i++)
             {
-                if (target == arry[i, 0])
+                if (target == array[i, 0])
                 {
-                    if (arry[i, 1] == "true")
+                    if (array[i, 1] == "true")
                     {
                         return 0;
                     }
@@ -519,5 +543,125 @@ namespace mcs
             else
                 SkinMessageBox("提示 :", "保存失败", 1);
         }
+        private string[] Enumeratefiles(string directroy)//枚举文件 返回文件名 string[] 
+        {
+            ArrayList value = new ArrayList();
+            DirectoryInfo dir = new DirectoryInfo(directroy);
+            FileSystemInfo[] files = dir.GetFileSystemInfos();
+            for (int i = 0; i < files.Length; i++)
+            {
+                FileInfo file = files[i] as FileInfo;
+                if (file != null)
+                {
+                    value.Add(file.Name);
+                }
+            }
+            return (string[])value.ToArray(typeof(string));
+        }
+        private void skinButton11_Click(object sender, EventArgs e)//刷新mod
+        {
+            ModsList.Items.Clear();
+            if (Directory.Exists(Rundir + "\\mods"))
+            {
+                string[] files = Enumeratefiles(Rundir + "\\mods");
+                foreach (string v in files)
+                {
+                    if (v.Substring(v.Length - 3, 3) == "jar")
+                    {
+                        ModsList.Items.Add(new CCWin.SkinControl.SkinListBoxItem(v));
+                    }
+                }
+            }
+        }
+        private void skinButton9_Click(object sender, EventArgs e)//添加mod
+        {
+            string filepath = openfile("选择mod文件", "Mod|*.jar");
+            if (filepath != "" && filepath != null)
+            {
+                string[] v = filepath.Split('\\');
+                string filename = v[v.Length - 1];
+                try
+                {
+                    File.Copy(filepath, Rundir + "\\mods\\" + filename);
+                }
+                catch (Exception ex)
+                {
+                    SkinMessageBox("警告 :", ex.Message, 1);
+                }
+                ModsList.Items.Add(new CCWin.SkinControl.SkinListBoxItem(filename));
+            }
+        }
+        private void skinButton10_Click(object sender, EventArgs e)//删除mod
+        {
+            if (ModsList.SelectedIndex != -1)
+            {
+                try
+                {
+                    File.Delete(Rundir + "\\mods\\" + ModsList.SelectedItem);
+                }
+                catch (Exception ex)
+                {
+                    SkinMessageBox("警告 :", ex.Message, 1);
+                }
+                ModsList.Items.Remove((CCWin.SkinControl.SkinListBoxItem)ModsList.SelectedItem);
+            }
+        }
+        private void skinButton12_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", Rundir + "\\mods");
+        }//打开mods文件夹
+        private void skinButton16_Click(object sender, EventArgs e)//添加plugins
+        {
+            string filepath = openfile("选择插件", "插件|*.jar");
+            if (filepath != "" && filepath != null)
+            {
+                string[] v = filepath.Split('\\');
+                string filename = v[v.Length - 1];
+                try
+                {
+                    File.Copy(filepath, Rundir + "\\plugins\\" + filename);
+                }
+                catch (Exception ex)
+                {
+                    SkinMessageBox("警告 :", ex.Message, 1);
+                }
+                PluginsList.Items.Add(new CCWin.SkinControl.SkinListBoxItem(filename));
+            }
+        }
+        private void skinButton15_Click(object sender, EventArgs e)//删除plugins
+        {
+            if (PluginsList.SelectedIndex != -1)
+            {
+                try
+                {
+                    File.Delete(Rundir + "\\plugins\\" + PluginsList.SelectedItem);
+                }
+                catch (Exception ex)
+                {
+                    SkinMessageBox("警告 :", ex.Message, 1);
+                }
+                PluginsList.Items.Remove((CCWin.SkinControl.SkinListBoxItem)PluginsList.SelectedItem);
+            }
+        }
+        private void skinButton14_Click(object sender, EventArgs e)//刷新pluugins
+        {
+            PluginsList.Items.Clear();
+            if (Directory.Exists(Rundir + "\\plugins"))
+            {
+                string[] files = Enumeratefiles(Rundir + "\\plugins");
+                foreach (string v in files)
+                {
+                    if (v.Substring(v.Length - 3, 3) == "jar")
+                    {
+                        PluginsList.Items.Add(new CCWin.SkinControl.SkinListBoxItem(v));
+                    }
+                }
+            }
+        }
+        private void skinButton13_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", Rundir + "\\plugins");
+        }//打开plugins文件夹
+
     }
 }
