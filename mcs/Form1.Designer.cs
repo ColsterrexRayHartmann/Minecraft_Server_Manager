@@ -135,6 +135,9 @@
             this.VerLabel = new CCWin.SkinControl.SkinLabel();
             this.skinLabel2 = new CCWin.SkinControl.SkinLabel();
             this.server_stats = new CCWin.SkinControl.SkinLabel();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.Close)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.min)).BeginInit();
             this.skinTabControl1.SuspendLayout();
@@ -153,6 +156,7 @@
             this.skinGroupBox7.SuspendLayout();
             this.skinGroupBox6.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // skinLabel1
@@ -294,6 +298,7 @@
             this.Button_serverstopi.TabIndex = 19;
             this.Button_serverstopi.Text = "强制停止服务器";
             this.Button_serverstopi.UseVisualStyleBackColor = false;
+            this.Button_serverstopi.Click += new System.EventHandler(this.Button_serverstopi_Click);
             // 
             // Button_serverrestart
             // 
@@ -312,6 +317,7 @@
             this.Button_serverrestart.TabIndex = 18;
             this.Button_serverrestart.Text = "重启服务器";
             this.Button_serverrestart.UseVisualStyleBackColor = false;
+            this.Button_serverrestart.Click += new System.EventHandler(this.Button_serverrestart_Click);
             // 
             // settingbutton
             // 
@@ -811,6 +817,7 @@
             this.skinButton2.TabIndex = 49;
             this.skinButton2.Text = "添加";
             this.skinButton2.UseVisualStyleBackColor = false;
+            this.skinButton2.Click += new System.EventHandler(this.skinButton2_Click);
             // 
             // skinLabel9
             // 
@@ -2227,6 +2234,28 @@
             this.server_stats.TabIndex = 18;
             this.server_stats.Text = "服务器状态：未开启";
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "MCSM";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.退出ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // 退出ToolStripMenuItem
+            // 
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -2278,6 +2307,7 @@
             this.skinGroupBox6.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2390,6 +2420,9 @@
         private System.Windows.Forms.LinkLabel linkLabel5;
         private System.Windows.Forms.LinkLabel linkLabel6;
         private System.Windows.Forms.LinkLabel linkLabel7;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
     }
 }
 

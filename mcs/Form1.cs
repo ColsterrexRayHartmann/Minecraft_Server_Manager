@@ -119,6 +119,7 @@ namespace mcs
                 SkinMessageBox("警告 :", "请先关闭服务器", 1);
                 return;
             }
+            notifyIcon1.Dispose();
             Environment.Exit(0);
         }
         private void min_Click(object sender, EventArgs e)
@@ -285,7 +286,7 @@ namespace mcs
         /*
         private string ram()
         {
-            //TODO：内存获取
+            //TODO:内存获取
             
         }
         */
@@ -779,5 +780,44 @@ namespace mcs
         {
             //TODO:懒人包
         }
+
+        private void Button_serverstopi_Click(object sender, EventArgs e)
+        {
+            //TODO:强制关闭
+        }
+
+        private void Button_serverrestart_Click(object sender, EventArgs e)
+        {
+            //TODO:重启服务器
+        }
+
+        private void skinButton2_Click(object sender, EventArgs e)
+        {
+            //TODO:循环任务
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.ShowInTaskbar = true;
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenuStrip1.Show(MousePosition);
+            }
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close_Click(this,new EventArgs());
+        }
+
+        //TODO:更新
+
+        //TODO:托盘图标
     }
 }
