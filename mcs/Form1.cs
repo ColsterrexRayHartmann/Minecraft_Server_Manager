@@ -710,5 +710,74 @@ namespace mcs
         {
             Process.Start("https://github.com/NiTian1207/Minecraft_Server_Manager/commits/master");
         }
+        private void Copydirectory(string olddir,string newdir)
+        {
+            ArrayList files = new ArrayList(Directory.GetFiles(olddir));
+            foreach (string i in files)
+            {
+                string[] str = i.Split('\\');
+                File.Copy(i, newdir + "\\" + str[str.Length - 1]);
+            }
+            ArrayList dirs = new ArrayList(Directory.GetDirectories(olddir));
+            foreach (string i in dirs)
+            {
+                string[] str = i.Split('\\');
+                string dir = newdir + "\\" + str[str.Length - 1];
+                Directory.CreateDirectory(dir);
+                Copydirectory(i, dir);
+            }
+        }//复制目录
+        private void skinButton6_Click(object sender, EventArgs e)
+        {
+            if (SkinMessageBox("警告 :", "此操作将删除原地图，是否继续？", 2) == 2)
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                fbd.ShowDialog();
+                string path = fbd.SelectedPath;
+                if (path != null && path != "")
+                {
+                    if (Directory.Exists(Rundir + "\\world"))
+                        Directory.Delete(Rundir + "\\world", true);
+                    Directory.CreateDirectory(Rundir + "\\world");
+                    Copydirectory(path, Rundir + "\\world");
+                    SkinMessageBox("提示 :", "导入完成", 1);
+                }
+            }
+            
+        }
+        private void skinButton7_Click(object sender, EventArgs e)
+        {
+            Directory.Delete(Rundir + "\\world", true);
+        }
+        private void skinButton8_Click(object sender, EventArgs e)
+        {
+            DateTime time = new DateTime();
+            time = DateTime.Now;
+            string dirname = time.Year + "." + time.Month + "." + time.Day + " " + time.Hour + "." + time.Minute + "." + time.Second;
+            if (!Directory.Exists(Rundir + "\\Map_Backup"))
+            {
+                Directory.CreateDirectory(Rundir + "\\Map_Backup");
+                Directory.CreateDirectory(Rundir + "\\Map_Backup\\" + dirname);
+                Copydirectory(Rundir + "\\world", Rundir + "\\Map_Backup\\" + dirname);
+                if (SkinMessageBox("提示 :", "备份完成，是否打开备份文件夹？", 2) == 2)
+                {
+                    Process.Start("explorer.exe", Rundir + "\\Map_Backup\\" + dirname);
+                }
+            }
+            else
+            {
+                Directory.CreateDirectory(Rundir + "\\Map_Backup\\" + dirname);
+                Copydirectory(Rundir + "\\world", Rundir + "\\Map_Backup\\" + dirname);
+                if (SkinMessageBox("提示 :", "备份完成，是否打开备份文件夹？", 2) == 2)
+                {
+                    Process.Start("explorer.exe", Rundir + "\\Map_Backup\\" + dirname);
+                }
+            }
+        }//备份地图
+
+        private void skinButton5_Click(object sender, EventArgs e)
+        {
+            //TODO:懒人包
+        }
     }
 }

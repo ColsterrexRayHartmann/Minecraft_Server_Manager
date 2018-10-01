@@ -14,8 +14,7 @@ namespace mcs
     public partial class MessageForm : CCSkinMain
     {
         public int OutValue;
-
-        public MessageForm(string Title,string Text,int ButtonStyle)//ButtonStyle 1 确定 2是否
+        public MessageForm(string Title,string Text,int ButtonStyle)//ButtonStyle 1 确定 2是否(1否 2是)
         {
             InitializeComponent();
             TitleLabel.Text = Title;
@@ -32,28 +31,23 @@ namespace mcs
                 Button2.Visible = true;
             }
         }
-
         private void Close_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private void Close_MouseLeave(object sender, EventArgs e)
         {
             Close.Image = Properties.Resources.closewindow;
         }
-
         private void Close_MouseMove(object sender, MouseEventArgs e)
         {
             Close.Image = Properties.Resources.closewindow1;
         }
-
         private void Button1_Click(object sender, EventArgs e)
         {
                 OutValue = 1;
                 this.Close();
         }
-
         private void Button2_Click(object sender, EventArgs e)
         {
             OutValue = 2;
