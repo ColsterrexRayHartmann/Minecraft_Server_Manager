@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.Net.Mail;
 
 namespace mcs
 {
@@ -79,8 +80,19 @@ namespace mcs
                 Xmax = settings[2];
                 Xmin = settings[3];
             }
-            
             mc.serverMessage += new MCS.serverEventHandler(Server_serverMessage);
+
+            string[] a = getwebcode("https://raw.githubusercontent.com/NiTian1207/Minecraft_Server_Manager/master/Donors.txt", "UTF-8").Split(new char[2] { '\r', '\n' });
+            foreach (string i in a)
+            {
+                if (i != null && i != "" && i != "Donors:")
+                {
+                    skinListBox4.Items.Add(new CCWin.SkinControl.SkinListBoxItem(i));
+                }
+            }
+            //获取捐助表
+
+            
         }//启动线程
         //界面设计
         #region
@@ -206,6 +218,10 @@ namespace mcs
                     }
                 }
             }
+            else
+            {
+                Directory.CreateDirectory(Rundir + "\\mods");
+            }
         }
         private void skinLabel14_Click(object sender, EventArgs e)
         {
@@ -228,6 +244,10 @@ namespace mcs
                     }
                 }
             }
+            else
+            {
+                Directory.CreateDirectory(Rundir + "\\plugins");
+            }
         }
         private void skinLabel15_Click(object sender, EventArgs e)
         {
@@ -240,7 +260,7 @@ namespace mcs
             skinLabel14.ForeColor = Color.Black;
         }
         #endregion
-        private string searchIP1()
+        public string searchIP1()
         {
             string AddressIP = string.Empty;
             foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
@@ -252,7 +272,7 @@ namespace mcs
             }
             return AddressIP;
         }//获取内网IP
-        private string searchIP2()//获取外网IP
+        public string searchIP2()//获取外网IP
         {
             WebClient client = new WebClient();
             byte[] bytRecv = client.DownloadData("http://ip.tool.chinaz.com/"); 
@@ -272,7 +292,7 @@ namespace mcs
         private void Button_serverrun_Click(object sender, EventArgs e)//未完成
         {
             string cmd = "-Xms" + Xmin + "m -Xmx" + Xmax + "m -jar \"" + Rundir + "\\Server.jar\"";
-            MessageBox.Show(cmd);
+            Button_serverrun.Enabled = false; 
             //return;
             if (mc.Run(JavaPath, cmd))
             {
@@ -282,6 +302,7 @@ namespace mcs
             else
             {
                 server_infom.SkinTxt.AppendText("[警告]服务器启动失败");
+                Button_serverrun.Enabled = true;
             }
             
         }
@@ -307,6 +328,7 @@ namespace mcs
                 mc.Stop();
                 isserverrunning = false;
                 server_stats.Text = "服务器状态：未开启";
+                Button_serverrun.Enabled = true;
             }
         }
         private string[] settingcheck()
@@ -514,34 +536,41 @@ namespace mcs
         }// unicode转中文
         private void skinButton1_Click(object sender, EventArgs e)//保存配置
         {
-            string[,] pro = new string[mc.GetConf().Length, 2];
-            pro = mc.GetConf();
-            pro[find2("allow-nether", pro),1]= putout(skinComboBox1);
-            pro[find2("difficulty", pro), 1] = skinComboBox7.SelectedIndex.ToString();
-            pro[find2("spawn-monsters", pro), 1] = putout(skinComboBox3);
-            pro[find2("pvp", pro), 1] = putout(skinComboBox8);
-            pro[find2("enable-command-block", pro), 1] = putout(skinComboBox9);
-            pro[find2("max-players", pro), 1] = skinTextBox10.Text;
-            pro[find2("server-port", pro), 1] = skinTextBox8.Text;
-            pro[find2("spawn-animals", pro), 1] = putout(skinComboBox5);
-            pro[find2("white-list", pro), 1] = putout(skinComboBox6);
-            pro[find2("online-mode", pro), 1] = putout(skinComboBox2);
-            pro[find2("level-seed", pro), 1] = skinTextBox9.Text;
-            pro[find2("motd", pro), 1] = unicode_0(skinTextBox7.Text);
-            string value = "";
-            int x = 0;
-            foreach (string i in pro)
+            if (!isserverrunning)
             {
-                if (x % 2 == 0)
-                    value += i + "=";
+                string[,] pro = new string[mc.GetConf().Length, 2];
+                pro = mc.GetConf();
+                pro[find2("allow-nether", pro), 1] = putout(skinComboBox1);
+                pro[find2("difficulty", pro), 1] = skinComboBox7.SelectedIndex.ToString();
+                pro[find2("spawn-monsters", pro), 1] = putout(skinComboBox3);
+                pro[find2("pvp", pro), 1] = putout(skinComboBox8);
+                pro[find2("enable-command-block", pro), 1] = putout(skinComboBox9);
+                pro[find2("max-players", pro), 1] = skinTextBox10.Text;
+                pro[find2("server-port", pro), 1] = skinTextBox8.Text;
+                pro[find2("spawn-animals", pro), 1] = putout(skinComboBox5);
+                pro[find2("white-list", pro), 1] = putout(skinComboBox6);
+                pro[find2("online-mode", pro), 1] = putout(skinComboBox2);
+                pro[find2("level-seed", pro), 1] = skinTextBox9.Text;
+                pro[find2("motd", pro), 1] = unicode_0(skinTextBox7.Text);
+                string value = "";
+                int x = 0;
+                foreach (string i in pro)
+                {
+                    if (x % 2 == 0)
+                        value += i + "=";
+                    else
+                        value += i + "\r\n";
+                    x++;
+                }
+                if (MCS.WriteText(Rundir + "\\server.properties", value))
+                    SkinMessageBox("提示 :", "保存完成", 1);
                 else
-                    value += i + "\r\n";
-                x++;
+                    SkinMessageBox("提示 :", "保存失败", 1);
             }
-            if (MCS.WriteText(Rundir + "\\server.properties", value))
-                SkinMessageBox("提示 :", "保存完成", 1);
             else
-                SkinMessageBox("提示 :", "保存失败", 1);
+            {
+                SkinMessageBox("警告 :", "关闭服务器后再试", 1);
+            }
         }
         private string[] Enumeratefiles(string directroy)//枚举文件 返回文件名 string[] 
         {
@@ -662,6 +691,24 @@ namespace mcs
         {
             Process.Start("explorer.exe", Rundir + "\\plugins");
         }//打开plugins文件夹
-
+        private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/NiTian1207/Minecraft_Server_Manager");
+        }
+        private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/NiTian1207/Minecraft_Server_Manager/commit/c8be7d6");
+        }
+        public static string getwebcode(string url, string encoder)
+        {
+            WebClient myWebClient = new WebClient();
+            byte[] myDataBuffer = myWebClient.DownloadData(url);
+            string SourceCode = Encoding.GetEncoding(encoder).GetString(myDataBuffer);
+            return SourceCode;
+        }
+        private void linkLabel7_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/NiTian1207/Minecraft_Server_Manager/commits/master");
+        }
     }
 }

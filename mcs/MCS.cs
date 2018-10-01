@@ -181,12 +181,15 @@ namespace mcs
         private void Th_Output()
         {
             string line;
+            string serverversion = "";
+            System.DateTime currenttime = new DateTime();
             while ((line = ps.StandardOutput.ReadLine()) != null)
             {
                 line = line.Replace("\b", "");
                 if (!serverIsRun)
                 {
                     int a = line.IndexOf("Starting minecraft server");
+                    int b = line.IndexOf("server version");
                     if (a != -1)
                     {
                         a = a + 33;
@@ -194,8 +197,48 @@ namespace mcs
                     }
                     if (line.IndexOf("Done") != -1)
                     {
-                        line = "[提醒] 服务端已成功运行，您可以进入服务器了。";
+                        currenttime = System.DateTime.Now;
+                        int hour = currenttime.Hour;
+                        int min = currenttime.Minute;
+                        int sec = currenttime.Second;
+                        string h = "";
+                        string m = "";
+                        string s = "";
+
+                        if (hour < 10)
+                        {
+                            h = "0" + hour.ToString();
+                        }
+                        else
+                        {
+                            h = hour.ToString();
+                        }
+
+                        if (min < 10)
+                        {
+                            m = "0" + min.ToString();
+                        }
+                        else
+                        {
+                            m = min.ToString();
+                        }
+
+                        if (sec < 10)
+                        {
+                            s = "0" + sec.ToString();
+                        }
+                        else
+                        {
+                            s = sec.ToString();
+                        }
+                        string time = "[" + h + ":" + m + ":" + s + "]";
+                        line = time + " [提醒] 服务端已成功运行，您可以进入服务器了。" + "\r\n" + time + " [提醒] 服务器版本为:" + serverversion;
                         serverIsRun = true;
+                    }
+                    if (b != -1)
+                    {
+                        string[] str = line.Split(' ');
+                        serverversion = str[str.Length - 1];
                     }
                 }
                 if (serverMessage != null)
