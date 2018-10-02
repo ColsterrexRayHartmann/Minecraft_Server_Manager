@@ -801,11 +801,18 @@ namespace mcs
         }
         private void Button_serverstopi_Click(object sender, EventArgs e)
         {
-            //TODO:强制关闭
+            mc.shutdown();
         }
         private void Button_serverrestart_Click(object sender, EventArgs e)
         {
-            //TODO:重启服务器
+            /*
+            if (isserverrunning)
+            {
+                mc.restart();
+            }
+            */
+
+            mc.restart();
         }
         private void skinButton2_Click(object sender, EventArgs e)
         {

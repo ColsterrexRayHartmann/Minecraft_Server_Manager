@@ -19,8 +19,13 @@ namespace mcs
         private Thread th_output;//监控OutPut输出线程
         private Thread th_errorput;//监控ErrorPut输出线程
         private Thread th_ps;//监控进程运行状态线程
-        private bool serverIsRun;//服务端是否在运行
+        private Thread th_rs;//重启线程
+        private bool serverIsRun = false;//服务端是否在运行
         private string serverVer;//服务端版本
+        private string cmd = "";
+        private string javapath = "";
+        System.DateTime currenttime = new DateTime();
+
         public MCS(string runDir)
         {
             ServerPath = runDir;
@@ -159,6 +164,8 @@ namespace mcs
             ps.StartInfo.RedirectStandardOutput = true;
             ps.StartInfo.WorkingDirectory = ServerPath;
             ps.StartInfo.CreateNoWindow = true;
+            this.cmd = cmd;
+            this.javapath = javaPath;
             try
             {
                 ps.Start();
@@ -171,6 +178,7 @@ namespace mcs
             }
             th_output = new Thread(Th_Output);
             th_output.Start();
+            serverIsRun = true;
             return true;
 
         }
@@ -178,11 +186,50 @@ namespace mcs
         {
             ps.StandardInput.WriteLine("stop");
         }
+        private string gettime()
+        {
+            currenttime = System.DateTime.Now;
+            int hour = currenttime.Hour;
+            int min = currenttime.Minute;
+            int sec = currenttime.Second;
+            string h = "";
+            string m = "";
+            string s = "";
+
+            if (hour < 10)
+            {
+                h = "0" + hour.ToString();
+            }
+            else
+            {
+                h = hour.ToString();
+            }
+
+            if (min < 10)
+            {
+                m = "0" + min.ToString();
+            }
+            else
+            {
+                m = min.ToString();
+            }
+
+            if (sec < 10)
+            {
+                s = "0" + sec.ToString();
+            }
+            else
+            {
+                s = sec.ToString();
+            }
+            string time = "[" + h + ":" + m + ":" + s + "]";
+            return time;
+        }
         private void Th_Output()
         {
             string line;
             string serverversion = "";
-            System.DateTime currenttime = new DateTime();
+            
             while ((line = ps.StandardOutput.ReadLine()) != null)
             {
                 line = line.Replace("\b", "");
@@ -197,41 +244,7 @@ namespace mcs
                     }
                     if (line.IndexOf("Done") != -1)
                     {
-                        currenttime = System.DateTime.Now;
-                        int hour = currenttime.Hour;
-                        int min = currenttime.Minute;
-                        int sec = currenttime.Second;
-                        string h = "";
-                        string m = "";
-                        string s = "";
-
-                        if (hour < 10)
-                        {
-                            h = "0" + hour.ToString();
-                        }
-                        else
-                        {
-                            h = hour.ToString();
-                        }
-
-                        if (min < 10)
-                        {
-                            m = "0" + min.ToString();
-                        }
-                        else
-                        {
-                            m = min.ToString();
-                        }
-
-                        if (sec < 10)
-                        {
-                            s = "0" + sec.ToString();
-                        }
-                        else
-                        {
-                            s = sec.ToString();
-                        }
-                        string time = "[" + h + ":" + m + ":" + s + "]";
+                        string time = gettime();
                         line = time + " [提醒] 服务端已成功运行，您可以进入服务器了。" + "\r\n" + time + " [提醒] 服务器版本为:" + serverversion;
                         serverIsRun = true;
                     }
@@ -249,5 +262,43 @@ namespace mcs
         {
             ps.StandardInput.WriteLine(cmd);
         }//发送指令
+        public void shutdown()
+        {
+            if(serverIsRun)
+                ps.Kill();
+        }
+        private void Th_resatart()
+        {
+            Stop();
+            if (!ps.WaitForExit(120000))
+            {
+                ps.Kill();
+            }
+            Thread.Sleep(2000);
+            if (!Run(javapath, cmd))
+            {
+                if (serverMessage != null)
+                    serverMessage(this, new MCSEvent(gettime() + " [警告] 服务器重启失败", 0));
+            }
+        }//重启线程
+        public bool restart()
+        {
+
+            if (serverIsRun)
+            {
+                
+                th_rs = new Thread(Th_resatart);
+                try
+                {
+                    th_rs.Start();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
