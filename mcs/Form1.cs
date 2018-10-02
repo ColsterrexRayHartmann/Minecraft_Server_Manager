@@ -29,72 +29,8 @@ namespace mcs
         string Xmax = "";
         string Xmin = "";
         bool isserverrunning = false;
-        private delegate void serverEventHandler(object sender, MCSEvent e);
-        public Form1()
-        {
-            CCWin.SkinControl.ScrollBarDrawImage.ScrollVertShaft = Properties.Resources.ScrollVertShaft;
-            CCWin.SkinControl.ScrollBarDrawImage.ScrollVertArrow = Properties.Resources.ScrollVertArrow;
-            CCWin.SkinControl.ScrollBarDrawImage.ScrollVertThumb = Properties.Resources.ScrollVertThumb;
-            InitializeComponent();
-        }
-        void Server_serverMessage(object sender, MCSEvent e)
-        {
-            if (server_infom.InvokeRequired)
-                Invoke(new serverEventHandler(Server_serverMessage), new object[] { sender, e });
-            else
-            {
-                if (server_infom.Text.Length >= 30000)
-                    server_infom.Text = "";
-                server_infom.Text = server_infom.Text + e.cmd + "\r\n";
-                server_infom.SkinTxt.SelectionStart = server_infom.Text.Length - 1;
-                server_infom.SkinTxt.ScrollToCaret();
-            }
-        }//事件-服务器回显消息通知
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //mc.serverMessage += new MCS.serverEventHandler(Server_serverMessage); //订阅事件
-            VerLabel.Text = "版本：" + ver;
-            skinTabControl1.ItemSize = new Size(0, 1);
-            skinTabControl2.ItemSize = new Size(0, 1);
-            skinTabControl1.SelectedIndex = 0;
-            skinTabControl2.SelectedIndex = 0;
-            Thread load = new Thread(Loadwin);
-            jardirectorytextbox.Text = Environment.CurrentDirectory + "\\Server";
-            load.Start();//开始 启动线程
-        }
-        private void Loadwin()
-        {
-            Control.CheckForIllegalCrossThreadCalls = false;
-            IP.Text = "外网IP：" + searchIP2() + "          " + "内网IP：" + searchIP1();
-            string[] settings = settingcheck();
-            if (settings == null || settings[0] == null || settings[0] == "" || settings[1] == null || settings[1] == "" || settings[2] == null || settings[2] == "" || settings[3] == null || settings[3] == "")
-            {
-                skinTabControl1.SelectedIndex = 1;
-                skinTabControl2.SelectedIndex = 0;
-                SkinMessageBox("警告 :", "请完成基础设置", 1);
-            }
-            else
-            {
-                Rundir = settings[0];
-                JavaPath = settings[1];
-                Xmax = settings[2];
-                Xmin = settings[3];
-            }
-            mc.serverMessage += new MCS.serverEventHandler(Server_serverMessage);
 
-            string[] a = getwebcode("https://raw.githubusercontent.com/NiTian1207/Minecraft_Server_Manager/master/Donors.txt", "UTF-8").Split(new char[2] { '\r', '\n' });
-            foreach (string i in a)
-            {
-                if (i != null && i != "" && i != "Donors:")
-                {
-                    skinListBox4.Items.Add(new CCWin.SkinControl.SkinListBoxItem(i));
-                }
-            }
-            //获取捐助表
-
-            
-        }//启动线程
-        //界面设计
+        //界面控制
         #region
         private void min_MouseMove(object sender, MouseEventArgs e)
         {
@@ -114,13 +50,16 @@ namespace mcs
         }
         private void Close_Click(object sender, EventArgs e)
         {
-            if (isserverrunning)
+            if (SkinMessageBox("确认关闭？", "是，关闭    否，最小化", 2) == 2)
             {
-                SkinMessageBox("警告 :", "请先关闭服务器", 1);
-                return;
+                退出ToolStripMenuItem_Click(this, new EventArgs());
             }
-            notifyIcon1.Dispose();
-            Environment.Exit(0);
+            else
+            {
+                this.ShowInTaskbar = false;
+                this.Hide();
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
         private void min_Click(object sender, EventArgs e)
         {
@@ -163,8 +102,8 @@ namespace mcs
                 skinTabControl2.SelectedIndex = 1;
                 skinLabel12.ForeColor = Color.CornflowerBlue;
 
-                
-                string[,] pro = new string [mc.GetConf().Length,2];
+
+                string[,] pro = new string[mc.GetConf().Length, 2];
                 pro = mc.GetConf();
                 skinTextBox7.Text = unicode_js_1(find("motd", pro));
                 skinComboBox1.SelectedIndex = find1("allow-nether", pro);
@@ -261,6 +200,72 @@ namespace mcs
             skinLabel14.ForeColor = Color.Black;
         }
         #endregion
+
+        private delegate void serverEventHandler(object sender, MCSEvent e);
+        public Form1()
+        {
+            CCWin.SkinControl.ScrollBarDrawImage.ScrollVertShaft = Properties.Resources.ScrollVertShaft;
+            CCWin.SkinControl.ScrollBarDrawImage.ScrollVertArrow = Properties.Resources.ScrollVertArrow;
+            CCWin.SkinControl.ScrollBarDrawImage.ScrollVertThumb = Properties.Resources.ScrollVertThumb;
+            InitializeComponent();
+        }
+        void Server_serverMessage(object sender, MCSEvent e)
+        {
+            if (server_infom.InvokeRequired)
+                Invoke(new serverEventHandler(Server_serverMessage), new object[] { sender, e });
+            else
+            {
+                if (server_infom.Text.Length >= 30000)
+                    server_infom.Text = "";
+                server_infom.Text = server_infom.Text + e.cmd + "\r\n";
+                server_infom.SkinTxt.SelectionStart = server_infom.Text.Length - 1;
+                server_infom.SkinTxt.ScrollToCaret();
+            }
+        }//事件-服务器回显消息通知
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //mc.serverMessage += new MCS.serverEventHandler(Server_serverMessage); //订阅事件
+            VerLabel.Text = "版本：" + ver;
+            skinTabControl1.ItemSize = new Size(0, 1);
+            skinTabControl2.ItemSize = new Size(0, 1);
+            skinTabControl1.SelectedIndex = 0;
+            skinTabControl2.SelectedIndex = 0;
+            Thread load = new Thread(Loadwin);
+            jardirectorytextbox.Text = Environment.CurrentDirectory + "\\Server";
+            load.Start();//开始 启动线程
+        }
+        private void Loadwin()
+        {
+            Control.CheckForIllegalCrossThreadCalls = false;
+            IP.Text = "外网IP：" + searchIP2() + "          " + "内网IP：" + searchIP1();
+            string[] settings = settingcheck();
+            if (settings == null || settings[0] == null || settings[0] == "" || settings[1] == null || settings[1] == "" || settings[2] == null || settings[2] == "" || settings[3] == null || settings[3] == "")
+            {
+                skinTabControl1.SelectedIndex = 1;
+                skinTabControl2.SelectedIndex = 0;
+                SkinMessageBox("警告 :", "请完成基础设置", 1);
+            }
+            else
+            {
+                Rundir = settings[0];
+                JavaPath = settings[1];
+                Xmax = settings[2];
+                Xmin = settings[3];
+            }
+            mc.serverMessage += new MCS.serverEventHandler(Server_serverMessage);
+
+            string[] a = getwebcode("https://raw.githubusercontent.com/NiTian1207/Minecraft_Server_Manager/master/Donors.txt", "UTF-8").Split(new char[2] { '\r', '\n' });
+            foreach (string i in a)
+            {
+                if (i != null && i != "" && i != "Donors:")
+                {
+                    skinListBox4.Items.Add(new CCWin.SkinControl.SkinListBoxItem(i));
+                }
+            }
+            //获取捐助表
+
+            
+        }//启动线程
         public string searchIP1()
         {
             string AddressIP = string.Empty;
@@ -283,13 +288,6 @@ namespace mcs
             int rightindex =  str.IndexOf("</dd>", leftindex);
             return str.Substring(leftindex, rightindex - leftindex);
         }
-        /*
-        private string ram()
-        {
-            //TODO:内存获取
-            
-        }
-        */
         private void Button_serverrun_Click(object sender, EventArgs e)//未完成
         {
             string cmd = "-Xms" + Xmin + "m -Xmx" + Xmax + "m -jar \"" + Rundir + "\\Server.jar\"";
@@ -775,49 +773,44 @@ namespace mcs
                 }
             }
         }//备份地图
-
-        private void skinButton5_Click(object sender, EventArgs e)
-        {
-            //TODO:懒人包
-        }
-
-        private void Button_serverstopi_Click(object sender, EventArgs e)
-        {
-            //TODO:强制关闭
-        }
-
-        private void Button_serverrestart_Click(object sender, EventArgs e)
-        {
-            //TODO:重启服务器
-        }
-
-        private void skinButton2_Click(object sender, EventArgs e)
-        {
-            //TODO:循环任务
-        }
-
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.ShowInTaskbar = true;
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
-
-        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                contextMenuStrip1.Show(MousePosition);
-            }
-        }
-
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close_Click(this,new EventArgs());
+            if (isserverrunning)
+            {
+                SkinMessageBox("警告 :", "请先关闭服务器", 1);
+                return;
+            }
+            notifyIcon1.Dispose();
+            this.Close();
         }
-
+        private void 显示主窗体ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = true;
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+        private void skinButton5_Click(object sender, EventArgs e)
+        {
+            //TODO:懒人包
+        }
+        private void Button_serverstopi_Click(object sender, EventArgs e)
+        {
+            //TODO:强制关闭
+        }
+        private void Button_serverrestart_Click(object sender, EventArgs e)
+        {
+            //TODO:重启服务器
+        }
+        private void skinButton2_Click(object sender, EventArgs e)
+        {
+            //TODO:循环任务
+        }
         //TODO:更新
-
-        //TODO:托盘图标
     }
 }
