@@ -233,11 +233,7 @@ namespace mcs
             Thread load = new Thread(Loadwin);
             jardirectorytextbox.Text = Environment.CurrentDirectory + "\\Server";
             load.Start();//开始 启动线程
-        }
-        private void Loadwin()
-        {
-            Control.CheckForIllegalCrossThreadCalls = false;
-            IP.Text = "外网IP：" + searchIP2() + "          " + "内网IP：" + searchIP1();
+
             string[] settings = settingcheck();
             if (settings == null || settings[0] == null || settings[0] == "" || settings[1] == null || settings[1] == "" || settings[2] == null || settings[2] == "" || settings[3] == null || settings[3] == "")
             {
@@ -252,8 +248,12 @@ namespace mcs
                 Xmax = settings[2];
                 Xmin = settings[3];
             }
+        }
+        private void Loadwin()
+        {
+            Control.CheckForIllegalCrossThreadCalls = false;
+            IP.Text = "外网IP：" + searchIP2() + "          " + "内网IP：" + searchIP1();
             mc.serverMessage += new MCS.serverEventHandler(Server_serverMessage);
-
             string[] a = getwebcode("https://raw.githubusercontent.com/NiTian1207/Minecraft_Server_Manager/master/Donors.txt", "UTF-8").Split(new char[2] { '\r', '\n' });
             foreach (string i in a)
             {
@@ -263,8 +263,6 @@ namespace mcs
                 }
             }
             //获取捐助表
-
-            
         }//启动线程
         public string searchIP1()
         {
