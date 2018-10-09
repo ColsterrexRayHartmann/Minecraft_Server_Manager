@@ -42,7 +42,6 @@
             this.settingbutton = new CCWin.SkinControl.SkinPictureBox();
             this.Button_serverstop = new CCWin.SkinControl.SkinButton();
             this.server_infom = new CCWin.SkinControl.SkinTextBox();
-            this.server_messagesender = new CCWin.SkinControl.SkinTextBox();
             this.Button_serverrun = new CCWin.SkinControl.SkinButton();
             this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
@@ -140,6 +139,7 @@
             this.显示主窗体ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.server_messagesender = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Close)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.min)).BeginInit();
             this.skinTabControl1.SuspendLayout();
@@ -231,6 +231,7 @@
             // skinTabPage1
             // 
             this.skinTabPage1.BackColor = System.Drawing.Color.White;
+            this.skinTabPage1.Controls.Add(this.server_messagesender);
             this.skinTabPage1.Controls.Add(this.skinCheckBox1);
             this.skinTabPage1.Controls.Add(this.IP);
             this.skinTabPage1.Controls.Add(this.Button_serverstopi);
@@ -238,7 +239,6 @@
             this.skinTabPage1.Controls.Add(this.settingbutton);
             this.skinTabPage1.Controls.Add(this.Button_serverstop);
             this.skinTabPage1.Controls.Add(this.server_infom);
-            this.skinTabPage1.Controls.Add(this.server_messagesender);
             this.skinTabPage1.Controls.Add(this.Button_serverrun);
             this.skinTabPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage1.Location = new System.Drawing.Point(0, 10);
@@ -399,49 +399,6 @@
             this.server_infom.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.server_infom.WaterText = "";
             this.server_infom.WordWrap = true;
-            // 
-            // server_messagesender
-            // 
-            this.server_messagesender.AutoScroll = true;
-            this.server_messagesender.BackColor = System.Drawing.Color.Transparent;
-            this.server_messagesender.DownBack = null;
-            this.server_messagesender.Icon = null;
-            this.server_messagesender.IconIsButton = false;
-            this.server_messagesender.IconMouseState = CCWin.SkinClass.ControlState.Normal;
-            this.server_messagesender.IsPasswordChat = '\0';
-            this.server_messagesender.IsSystemPasswordChar = false;
-            this.server_messagesender.Lines = new string[0];
-            this.server_messagesender.Location = new System.Drawing.Point(10, 261);
-            this.server_messagesender.Margin = new System.Windows.Forms.Padding(0);
-            this.server_messagesender.MaxLength = 32767;
-            this.server_messagesender.MinimumSize = new System.Drawing.Size(28, 28);
-            this.server_messagesender.MouseBack = null;
-            this.server_messagesender.MouseState = CCWin.SkinClass.ControlState.Normal;
-            this.server_messagesender.Multiline = false;
-            this.server_messagesender.Name = "server_messagesender";
-            this.server_messagesender.NormlBack = null;
-            this.server_messagesender.Padding = new System.Windows.Forms.Padding(5);
-            this.server_messagesender.ReadOnly = false;
-            this.server_messagesender.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.server_messagesender.Size = new System.Drawing.Size(581, 28);
-            // 
-            // 
-            // 
-            this.server_messagesender.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.server_messagesender.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.server_messagesender.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
-            this.server_messagesender.SkinTxt.Location = new System.Drawing.Point(5, 5);
-            this.server_messagesender.SkinTxt.Name = "BaseText";
-            this.server_messagesender.SkinTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.server_messagesender.SkinTxt.Size = new System.Drawing.Size(571, 18);
-            this.server_messagesender.SkinTxt.TabIndex = 0;
-            this.server_messagesender.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.server_messagesender.SkinTxt.WaterText = "输入指令 (不加 \"\\\")";
-            this.server_messagesender.TabIndex = 15;
-            this.server_messagesender.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.server_messagesender.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.server_messagesender.WaterText = "输入指令 (不加 \"\\\")";
-            this.server_messagesender.WordWrap = true;
             // 
             // Button_serverrun
             // 
@@ -2274,6 +2231,14 @@
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
+            // server_messagesender
+            // 
+            this.server_messagesender.Location = new System.Drawing.Point(10, 263);
+            this.server_messagesender.Name = "server_messagesender";
+            this.server_messagesender.Size = new System.Drawing.Size(581, 23);
+            this.server_messagesender.TabIndex = 22;
+            this.server_messagesender.KeyUp += new System.Windows.Forms.KeyEventHandler(this.server_messagesender_KeyUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -2342,7 +2307,6 @@
         private CCWin.SkinControl.SkinTabPage skinTabPage2;
         private CCWin.SkinControl.SkinPictureBox settingbutton;
         private CCWin.SkinControl.SkinTextBox server_infom;
-        private CCWin.SkinControl.SkinTextBox server_messagesender;
         private CCWin.SkinControl.SkinButton Button_serverrun;
         private CCWin.SkinControl.SkinButton Button_serverstopi;
         private CCWin.SkinControl.SkinButton Button_serverrestart;
@@ -2444,6 +2408,7 @@
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 显示主窗体ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.TextBox server_messagesender;
     }
 }
 

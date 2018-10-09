@@ -816,6 +816,23 @@ namespace mcs
         {
             //TODO:循环任务
         }
+
+        private void server_messagesender_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && isserverrunning)
+            {
+
+                if (server_messagesender.Text == "stop")
+                {
+                    Button_serverstop_Click(this, new EventArgs());
+                }
+                else
+                {
+                    mc.sendMessage(server_messagesender.Text);
+                    server_messagesender.Text = "";
+                }
+            }
+        }
         //TODO:更新
     }
 }
