@@ -439,17 +439,24 @@ namespace mcs
         }
         private void InsButton_Click(object sender, EventArgs e)
         {
-            
+
             if (Directory.Exists(jardirectorytextbox.Text))
             {
-                if (SkinMessageBox("警告 :", "将删除原服务端文件，是否继续？", 2)==2)
+                if (SkinMessageBox("警告 :", "将删除原服务端文件，是否继续？", 2) == 2)
                 {
-                    Directory.Delete(jardirectorytextbox.Text,true);
+                    Directory.Delete(jardirectorytextbox.Text, true);
                     Directory.CreateDirectory(jardirectorytextbox.Text);
                     if (mc.Instal(openfile("选择服务端文件", "服务端文件|*.jar")))
                     {
-                        SkinMessageBox("提示 :","服务端安装完成",1);
+                        SkinMessageBox("提示 :", "服务端安装完成", 1);
                     }
+                }
+            }
+            else
+            {
+                if (mc.Instal(openfile("选择服务端文件", "服务端文件|*.jar")))
+                {
+                    SkinMessageBox("提示 :", "服务端安装完成", 1);
                 }
             }
             
